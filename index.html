@@ -11,19 +11,33 @@
 .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:16px}.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:16px;box-shadow:0 4px 18px #0000000a}
 h2{font-size:19px;margin:0 0 14px}.form{display:grid;grid-template-columns:1.3fr .65fr 1fr auto;gap:8px}
 input,select,button{font:inherit;border-radius:11px;border:1px solid #d1d5db;padding:11px;background:#fff}button{cursor:pointer;font-weight:700}.primary{background:#111827;color:white;border-color:#111827}
-.list{margin-top:14px;display:flex;flex-direction:column;gap:8px}.party{display:grid;grid-template-columns:1fr 75px 130px auto;gap:8px;align-items:center;border:1px solid var(--border);border-radius:12px;padding:8px;transition:.18s ease}
+.list{margin-top:14px;display:flex;flex-direction:column;gap:8px}.party{display:grid;grid-template-columns:1fr 75px 190px auto;gap:8px;align-items:center;border:1px solid var(--border);border-radius:12px;padding:8px;transition:.18s ease}
 .party.camp-n{background:#eff6ff;border-color:#93c5fd;border-right:6px solid var(--n)}
 .party.camp-e{background:#fff1f2;border-color:#fda4af;border-right:6px solid var(--e)}
-.party.camp-u{background:#f3f4f6;border-color:#d1d5db;border-right:6px solid var(--u)}
-.party input,.party select{width:100%;padding:8px;background:rgba(255,255,255,.82)}.del{border:0;background:#fee2e2;color:#991b1b;padding:8px 10px}
+.party.camp-u{background:#fff;border-color:var(--border);border-right:1px solid var(--border)}
+.party input{width:100%;padding:8px;background:rgba(255,255,255,.82)}
+.campBtns{display:flex;gap:6px}
+.campBtn{padding:8px 10px;border:1px solid #d1d5db;background:#fff;color:#374151}
+.campBtn.n.active{background:var(--n);border-color:var(--n);color:#fff}
+.campBtn.e.active{background:var(--e);border-color:var(--e);color:#fff}
+.del{border:0;background:#fee2e2;color:#991b1b;padding:8px 10px}
 .chartBox{display:grid;place-items:center;padding:8px}.donut{width:min(320px,75vw);aspect-ratio:1;border-radius:50%;position:relative;background:conic-gradient(var(--n) 0 0,var(--e) 0 0,var(--u) 0 100%)}.donut:after{content:"";position:absolute;inset:25%;background:white;border-radius:50%}.center{position:absolute;z-index:2;inset:0;display:grid;place-content:center;text-align:center}.center b{font-size:35px}.center span{color:var(--muted);font-size:13px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.stat{border:1px solid var(--border);border-radius:12px;padding:10px;text-align:center}.stat b{display:block;font-size:24px}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-left:5px}
-.status{margin-top:12px;text-align:center;padding:10px;border-radius:11px;background:#f3f4f6;font-weight:700}.sim{margin-top:16px}.simRow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}.sim button.activeN{background:var(--n);color:#fff}.sim button.activeE{background:var(--e);color:#fff}.hint{font-size:13px;color:var(--muted);margin-top:8px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.stat{border:1px solid var(--border);border-radius:12px;padding:10px;text-align:center;transition:.18s ease}.stat b{display:block;font-size:24px}
+.stat.majority{background:#f0fdf4;border-color:#86efac;box-shadow:0 0 0 1px #bbf7d0 inset}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-left:5px}
+.status{margin-top:12px;text-align:center;padding:10px;border-radius:11px;background:#f3f4f6;font-weight:700}.sim{margin-top:16px}.simRow{display:grid;grid-template-columns:1fr 190px;gap:8px;margin-top:8px;align-items:center;border:1px solid var(--border);border-radius:12px;padding:8px;transition:.18s ease}
+.simRow.sim-n{background:#eff6ff;border-color:#93c5fd;border-right:6px solid var(--n)}
+.simRow.sim-e{background:#fff1f2;border-color:#fda4af;border-right:6px solid var(--e)}
+.simRow.sim-u{background:#fff}
+.simBtns{display:flex;gap:6px}
+.simBtn{padding:8px 10px;border:1px solid #d1d5db;background:#fff;color:#374151}
+.simBtn.n.active{background:var(--n);border-color:var(--n);color:#fff}
+.simBtn.e.active{background:var(--e);border-color:var(--e);color:#fff}
+.hint{font-size:13px;color:var(--muted);margin-top:8px}
 .actions{display:flex;gap:8px;margin-top:14px}.secondary{background:#fff}.empty{color:var(--muted);text-align:center;padding:20px}
 .seatCheck{margin-top:14px;border:1px solid var(--border);border-radius:14px;padding:12px;display:flex;align-items:center;justify-content:space-between;gap:12px;background:#f9fafb}
 .seatCheck .num{font-size:26px;font-weight:800}.seatCheck .detail{font-size:14px;color:var(--muted);text-align:left}
 .seatCheck.ok{background:#f0fdf4;border-color:#86efac}.seatCheck.short{background:#fffbeb;border-color:#fcd34d}.seatCheck.over{background:#fef2f2;border-color:#fca5a5}
-@media(max-width:760px){.grid{grid-template-columns:1fr}.form{grid-template-columns:1fr 90px}.form select{grid-column:1/2}.form button{grid-column:2/3}.party{grid-template-columns:1fr 65px}.party select{grid-column:1/2}.party .del{grid-column:2/3}.wrap{padding:10px}.card{border-radius:14px;padding:12px}}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.form{grid-template-columns:1fr 90px}.form button{grid-column:2/3}.party{grid-template-columns:1fr 65px}.party .campBtns{grid-column:1/2}.party .del{grid-column:2/3}.simRow{grid-template-columns:1fr}.wrap{padding:10px}.card{border-radius:14px;padding:12px}}
 </style>
 </head>
 <body>
@@ -35,7 +49,7 @@ input,select,button{font:inherit;border-radius:11px;border:1px solid #d1d5db;pad
       <form class="form" id="addForm">
         <input id="name" placeholder="اسم القائمة" required>
         <input id="seats" type="number" min="0" max="120" placeholder="مقاعد" required>
-        <select id="camp"><option value="n">معسكر نتنياهو</option><option value="e">معسكر أيزنكوت</option><option value="u">محايد</option></select>
+        <div class="hint" style="align-self:center">تُضاف القائمة كمحايدة، ثم اختر معسكرها من الأزرار.</div>
         <button class="primary">إضافة</button>
       </form>
       <div id="partyList" class="list"></div>
@@ -50,8 +64,8 @@ input,select,button{font:inherit;border-radius:11px;border:1px solid #d1d5db;pad
         <div class="donut" id="donut"><div class="center"><b id="total">0</b><span>إجمالي المقاعد</span></div></div>
       </div>
       <div class="stats">
-        <div class="stat"><span><i class="dot" style="background:var(--n)"></i>نتنياهو</span><b id="nSeats">0</b></div>
-        <div class="stat"><span><i class="dot" style="background:var(--e)"></i>أيزنكوت</span><b id="eSeats">0</b></div>
+        <div class="stat" id="nStat"><span><i class="dot" style="background:var(--n)"></i>نتنياهو</span><b id="nSeats">0</b></div>
+        <div class="stat" id="eStat"><span><i class="dot" style="background:var(--e)"></i>أيزنكوت</span><b id="eSeats">0</b></div>
         <div class="stat"><span><i class="dot" style="background:var(--u)"></i>محايد</span><b id="uSeats">0</b></div>
       </div>
       <div id="status" class="status">أضف القوائم لبدء المحاكاة</div>
@@ -97,7 +111,10 @@ function render(){
  else list.innerHTML=parties.map((p,i)=>`<div class="party camp-${p.camp}">
    <input value="${esc(p.name)}" oninput="editName(${i},this.value)">
    <input type="number" min="0" max="120" value="${p.seats}" oninput="editSeats(${i},this.value)">
-   <select onchange="editCamp(${i},this.value)"><option value="n" ${p.camp==="n"?"selected":""}>معسكر نتنياهو</option><option value="e" ${p.camp==="e"?"selected":""}>معسكر أيزنكوت</option><option value="u" ${p.camp==="u"?"selected":""}>محايد</option></select>
+   <div class="campBtns">
+     <button type="button" class="campBtn n ${p.camp==="n"?"active":""}" onclick="toggleCamp(${i},'n')">نتنياهو</button>
+     <button type="button" class="campBtn e ${p.camp==="e"?"active":""}" onclick="toggleCamp(${i},'e')">أيزنكوت</button>
+   </div>
    <button class="del" onclick="removeParty(${i})">حذف</button></div>`).join("");
  renderChart(); renderSim(); renderSeatCheck();
 }
@@ -113,6 +130,8 @@ function renderSeatCheck(){
 function renderChart(){
  const t=totals(), total=t.n+t.e+t.u, denom=total||1;
  $("nSeats").textContent=t.n;$("eSeats").textContent=t.e;$("uSeats").textContent=t.u;$("total").textContent=total;
+ $("nStat").classList.toggle("majority",t.n>=61);
+ $("eStat").classList.toggle("majority",t.e>=61);
  let a=t.n/denom*100,b=(t.n+t.e)/denom*100;
  $("donut").style.background=`conic-gradient(var(--n) 0 ${a}%,var(--e) ${a}% ${b}%,var(--u) ${b}% 100%)`;
  let msg= total===0?"أضف القوائم لبدء المحاكاة":`نتنياهو: ${t.n} • أيزنكوت: ${t.e} • محايد: ${t.u}`;
@@ -121,15 +140,25 @@ function renderChart(){
  $("status").textContent=msg;
 }
 function renderSim(){
- let rows=parties.map((p,i)=>p.camp==="u"?`<div class="simRow"><div><b>${esc(p.name)}</b> (${p.seats})</div><div><button class="${sim[i]==="n"?"activeN":""}" onclick="setSim(${i},'n')">← نتنياهو</button> <button class="${sim[i]==="e"?"activeE":""}" onclick="setSim(${i},'e')">أيزنكوت →</button> <button onclick="setSim(${i},null)">محايد</button></div></div>`:"").join("");
+ let rows=parties.map((p,i)=>{
+   if(p.camp!=="u") return "";
+   const assigned=sim[i]||"u";
+   return `<div class="simRow sim-${assigned}">
+     <div><b>${esc(p.name)}</b> (${p.seats})</div>
+     <div class="simBtns">
+       <button type="button" class="simBtn n ${assigned==="n"?"active":""}" onclick="toggleSim(${i},'n')">نتنياهو</button>
+       <button type="button" class="simBtn e ${assigned==="e"?"active":""}" onclick="toggleSim(${i},'e')">أيزنكوت</button>
+     </div>
+   </div>`;
+ }).join("");
  $("neutralSim").innerHTML=rows||'<div class="empty">لا توجد قوائم محايدة</div>';
 }
 window.editName=(i,v)=>{parties[i].name=v;save();renderChart();renderSim()}
 window.editSeats=(i,v)=>{parties[i].seats=Math.max(0,Number(v)||0);save();renderChart();renderSim();renderSeatCheck()}
-window.editCamp=(i,v)=>{parties[i].camp=v;sim={};save();render()}
+window.toggleCamp=(i,c)=>{parties[i].camp=(parties[i].camp===c?"u":c);sim={};save();render()}
 window.removeParty=i=>{parties.splice(i,1);sim={};save();render()}
-window.setSim=(i,c)=>{if(c)sim[i]=c;else delete sim[i];renderChart();renderSim()}
-$("addForm").onsubmit=e=>{e.preventDefault();parties.push({name:$("name").value.trim(),seats:Number($("seats").value)||0,camp:$("camp").value});save();e.target.reset();render()}
+window.toggleSim=(i,c)=>{if(sim[i]===c)delete sim[i];else sim[i]=c;renderChart();renderSim()}
+$("addForm").onsubmit=e=>{e.preventDefault();parties.push({name:$("name").value.trim(),seats:Number($("seats").value)||0,camp:"u"});save();e.target.reset();render()}
 $("pollBtn").onclick=()=>{if(confirm("إعادة تحميل نتائج استطلاع أخبار 13 الافتراضية؟")){parties=DEFAULT_POLL.map(p=>({...p}));sim={};save();render()}}
 $("clearBtn").onclick=()=>{if(confirm("مسح جميع القوائم؟")){parties=[];sim={};save();render()}}
 render();
