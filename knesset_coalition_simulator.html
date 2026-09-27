@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>محاكي معسكرات الكنيست</title>
+<style>
+:root{--bg:#f4f6f8;--card:#fff;--text:#17202a;--muted:#6b7280;--border:#e5e7eb;--n:#2563eb;--e:#e11d48;--u:#9ca3af;--good:#15803d}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text)}
+.wrap{max-width:1050px;margin:auto;padding:18px}.top{text-align:center;margin:8px 0 18px}.top h1{margin:0;font-size:clamp(24px,5vw,38px)}.top p{color:var(--muted);margin:7px 0}
+.grid{display:grid;grid-template-columns:1.05fr .95fr;gap:16px}.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:16px;box-shadow:0 4px 18px #0000000a}
+h2{font-size:19px;margin:0 0 14px}.form{display:grid;grid-template-columns:1.3fr .65fr 1fr auto;gap:8px}
+input,select,button{font:inherit;border-radius:11px;border:1px solid #d1d5db;padding:11px;background:#fff}button{cursor:pointer;font-weight:700}.primary{background:#111827;color:white;border-color:#111827}
+.list{margin-top:14px;display:flex;flex-direction:column;gap:8px}.party{display:grid;grid-template-columns:1fr 75px 130px auto;gap:8px;align-items:center;border:1px solid var(--border);border-radius:12px;padding:8px;transition:.18s ease}
+.party.camp-n{background:#eff6ff;border-color:#93c5fd;border-right:6px solid var(--n)}
+.party.camp-e{background:#fff1f2;border-color:#fda4af;border-right:6px solid var(--e)}
+.party.camp-u{background:#f3f4f6;border-color:#d1d5db;border-right:6px solid var(--u)}
+.party input,.party select{width:100%;padding:8px;background:rgba(255,255,255,.82)}.del{border:0;background:#fee2e2;color:#991b1b;padding:8px 10px}
+.chartBox{display:grid;place-items:center;padding:8px}.donut{width:min(320px,75vw);aspect-ratio:1;border-radius:50%;position:relative;background:conic-gradient(var(--n) 0 0,var(--e) 0 0,var(--u) 0 100%)}.donut:after{content:"";position:absolute;inset:25%;background:white;border-radius:50%}.center{position:absolute;z-index:2;inset:0;display:grid;place-content:center;text-align:center}.center b{font-size:35px}.center span{color:var(--muted);font-size:13px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.stat{border:1px solid var(--border);border-radius:12px;padding:10px;text-align:center}.stat b{display:block;font-size:24px}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-left:5px}
+.status{margin-top:12px;text-align:center;padding:10px;border-radius:11px;background:#f3f4f6;font-weight:700}.sim{margin-top:16px}.simRow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}.sim button.activeN{background:var(--n);color:#fff}.sim button.activeE{background:var(--e);color:#fff}.hint{font-size:13px;color:var(--muted);margin-top:8px}
+.actions{display:flex;gap:8px;margin-top:14px}.secondary{background:#fff}.empty{color:var(--muted);text-align:center;padding:20px}
+.seatCheck{margin-top:14px;border:1px solid var(--border);border-radius:14px;padding:12px;display:flex;align-items:center;justify-content:space-between;gap:12px;background:#f9fafb}
+.seatCheck .num{font-size:26px;font-weight:800}.seatCheck .detail{font-size:14px;color:var(--muted);text-align:left}
+.seatCheck.ok{background:#f0fdf4;border-color:#86efac}.seatCheck.short{background:#fffbeb;border-color:#fcd34d}.seatCheck.over{background:#fef2f2;border-color:#fca5a5}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.form{grid-template-columns:1fr 90px}.form select{grid-column:1/2}.form button{grid-column:2/3}.party{grid-template-columns:1fr 65px}.party select{grid-column:1/2}.party .del{grid-column:2/3}.wrap{padding:10px}.card{border-radius:14px;padding:12px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top"><h1>محاكي معسكرات الكنيست</h1><p>أدخل نتائج الاستطلاع وشاهد توزيع المقاعد بين المعسكرات</p></header>
+  <main class="grid">
+    <section class="card">
+      <h2>القوائم</h2>
+      <form class="form" id="addForm">
+        <input id="name" placeholder="اسم القائمة" required>
+        <input id="seats" type="number" min="0" max="120" placeholder="مقاعد" required>
+        <select id="camp"><option value="n">معسكر نتنياهو</option><option value="e">معسكر أيزنكوت</option><option value="u">محايد</option></select>
+        <button class="primary">إضافة</button>
+      </form>
+      <div id="partyList" class="list"></div>
+      <div id="seatCheck" class="seatCheck"><div><div>مجموع المقاعد</div><div class="num"><span id="listTotal">0</span> / 120</div></div><div id="seatDiff" class="detail"></div></div>
+      <div class="actions"><button class="secondary" id="pollBtn" type="button">تحميل استطلاع قناة 13</button><button class="secondary" id="clearBtn" type="button">مسح الكل</button></div>
+      <div class="hint">البيانات الافتراضية: استطلاع أخبار 13 المنشور في 23/09/2026. يتم حفظ تعديلاتك تلقائياً على هذا الجهاز.</div>
+    </section>
+
+    <section class="card">
+      <h2>توزيع المعسكرات</h2>
+      <div class="chartBox">
+        <div class="donut" id="donut"><div class="center"><b id="total">0</b><span>إجمالي المقاعد</span></div></div>
+      </div>
+      <div class="stats">
+        <div class="stat"><span><i class="dot" style="background:var(--n)"></i>نتنياهو</span><b id="nSeats">0</b></div>
+        <div class="stat"><span><i class="dot" style="background:var(--e)"></i>أيزنكوت</span><b id="eSeats">0</b></div>
+        <div class="stat"><span><i class="dot" style="background:var(--u)"></i>محايد</span><b id="uSeats">0</b></div>
+      </div>
+      <div id="status" class="status">أضف القوائم لبدء المحاكاة</div>
+      <div class="sim">
+        <h2>محاكاة القوائم المحايدة</h2>
+        <div id="neutralSim"></div>
+        <div class="hint">الإسناد هنا مؤقت للمحاكاة فقط ولا يغيّر تصنيف القائمة الأصلي.</div>
+      </div>
+    </section>
+  </main>
+</div>
+<script>
+const KEY="knesset-camp-simulator-v1";
+const DEFAULT_POLL=[
+ {name:"ישר! – ياشار (أيزنكوت)",seats:22,camp:"e"},
+ {name:"הליכוד – الليكود",seats:18,camp:"n"},
+ {name:"ביחד – بياحد (بينيت)",seats:11,camp:"e"},
+ {name:"הדמוקרטים – الديمقراطيون",seats:11,camp:"e"},
+ {name:"הרשימה המשותפת – القائمة المشتركة",seats:8,camp:"u"},
+ {name:"ישראל ביתנו – إسرائيل بيتنا",seats:8,camp:"e"},
+ {name:"יהדות התורה – يهدوت هتوراه",seats:8,camp:"n"},
+ {name:"עוצמה יהודית – عوتسما يهوديت",seats:7,camp:"n"},
+ {name:"ש״ס – شاس",seats:7,camp:"n"},
+ {name:"הציונות הדתית וזהות – الصهيونية الدينية وزهوت",seats:6,camp:"n"},
+ {name:"עמך ישראל – عمخا يسرائيل (فينتر)",seats:5,camp:"n"},
+ {name:"רע״ם – القائمة الموحدة",seats:5,camp:"u"},
+ {name:"המילואימניקים והכלכלית – الاحتياط والاقتصادية",seats:4,camp:"u"}
+];
+const saved=localStorage.getItem(KEY);
+let parties=saved ? JSON.parse(saved) : DEFAULT_POLL.map(p=>({...p}));
+let sim={};
+const $=id=>document.getElementById(id);
+function save(){localStorage.setItem(KEY,JSON.stringify(parties))}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function totals(){
+ let t={n:0,e:0,u:0};
+ parties.forEach((p,i)=>{let c=p.camp;if(c==="u"&&sim[i])c=sim[i];t[c]+=Number(p.seats)||0});
+ return t;
+}
+function render(){
+ const list=$("partyList");
+ if(!parties.length) list.innerHTML='<div class="empty">لا توجد قوائم بعد</div>';
+ else list.innerHTML=parties.map((p,i)=>`<div class="party camp-${p.camp}">
+   <input value="${esc(p.name)}" oninput="editName(${i},this.value)">
+   <input type="number" min="0" max="120" value="${p.seats}" oninput="editSeats(${i},this.value)">
+   <select onchange="editCamp(${i},this.value)"><option value="n" ${p.camp==="n"?"selected":""}>معسكر نتنياهو</option><option value="e" ${p.camp==="e"?"selected":""}>معسكر أيزنكوت</option><option value="u" ${p.camp==="u"?"selected":""}>محايد</option></select>
+   <button class="del" onclick="removeParty(${i})">حذف</button></div>`).join("");
+ renderChart(); renderSim(); renderSeatCheck();
+}
+function renderSeatCheck(){
+ const total=parties.reduce((sum,p)=>sum+(Number(p.seats)||0),0);
+ const diff=120-total, box=$("seatCheck");
+ $("listTotal").textContent=total;
+ box.classList.remove("ok","short","over");
+ if(diff===0){box.classList.add("ok");$("seatDiff").innerHTML="<b>✓ المجموع مكتمل</b><br>120 مقعداً";}
+ else if(diff>0){box.classList.add("short");$("seatDiff").innerHTML=`ينقصك <b>${diff}</b> ${diff===1?"مقعد":"مقاعد"}`;}
+ else{box.classList.add("over");$("seatDiff").innerHTML=`لديك زيادة <b>${Math.abs(diff)}</b> ${Math.abs(diff)===1?"مقعد":"مقاعد"}`;}
+}
+function renderChart(){
+ const t=totals(), total=t.n+t.e+t.u, denom=total||1;
+ $("nSeats").textContent=t.n;$("eSeats").textContent=t.e;$("uSeats").textContent=t.u;$("total").textContent=total;
+ let a=t.n/denom*100,b=(t.n+t.e)/denom*100;
+ $("donut").style.background=`conic-gradient(var(--n) 0 ${a}%,var(--e) ${a}% ${b}%,var(--u) ${b}% 100%)`;
+ let msg= total===0?"أضف القوائم لبدء المحاكاة":`نتنياهو: ${t.n} • أيزنكوت: ${t.e} • محايد: ${t.u}`;
+ if(t.n>=61||t.e>=61) msg+=" — يوجد معسكر عند 61 مقعداً أو أكثر";
+ else if(total) msg+=" — لا يوجد معسكر عند 61 مقعداً";
+ $("status").textContent=msg;
+}
+function renderSim(){
+ let rows=parties.map((p,i)=>p.camp==="u"?`<div class="simRow"><div><b>${esc(p.name)}</b> (${p.seats})</div><div><button class="${sim[i]==="n"?"activeN":""}" onclick="setSim(${i},'n')">← نتنياهو</button> <button class="${sim[i]==="e"?"activeE":""}" onclick="setSim(${i},'e')">أيزنكوت →</button> <button onclick="setSim(${i},null)">محايد</button></div></div>`:"").join("");
+ $("neutralSim").innerHTML=rows||'<div class="empty">لا توجد قوائم محايدة</div>';
+}
+window.editName=(i,v)=>{parties[i].name=v;save();renderChart();renderSim()}
+window.editSeats=(i,v)=>{parties[i].seats=Math.max(0,Number(v)||0);save();renderChart();renderSim();renderSeatCheck()}
+window.editCamp=(i,v)=>{parties[i].camp=v;sim={};save();render()}
+window.removeParty=i=>{parties.splice(i,1);sim={};save();render()}
+window.setSim=(i,c)=>{if(c)sim[i]=c;else delete sim[i];renderChart();renderSim()}
+$("addForm").onsubmit=e=>{e.preventDefault();parties.push({name:$("name").value.trim(),seats:Number($("seats").value)||0,camp:$("camp").value});save();e.target.reset();render()}
+$("pollBtn").onclick=()=>{if(confirm("إعادة تحميل نتائج استطلاع أخبار 13 الافتراضية؟")){parties=DEFAULT_POLL.map(p=>({...p}));sim={};save();render()}}
+$("clearBtn").onclick=()=>{if(confirm("مسح جميع القوائم؟")){parties=[];sim={};save();render()}}
+render();
+</script>
+</body>
+</html>
